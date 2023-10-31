@@ -158,8 +158,6 @@ psql -U postgres -h localhost -p 5432
 ```sql
 \connect mlops
 \d
-
-
 ```
 
 # Mongo
