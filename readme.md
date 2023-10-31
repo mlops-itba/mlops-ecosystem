@@ -58,10 +58,20 @@ GRANT ALL PRIVILEGES ON DATABASE mlflow_db TO mlflow_user;
 
 # Mlflow server
 
+### Creación de entorno e instalación de MLFLOW
 ```bash
-mlflow server --backend-store-uri postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOST/$MLFLOW_POSTGRES_DB --default-artifact-root $MLFLOW_ARTIFACTS_PATH -h 0.0.0.0 -p 8001
+conda create -n mlflow-server python=3.9
+conda activate mlflow-server
+
+pip install -r requirements.txt
 ```
-Abrir browser en http://localhost:8001/
+
+```bash
+# desde la carpeta del proyecto
+set -o allexport && source environments/local && set +o allexport
+mlflow server --backend-store-uri postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOST/$MLFLOW_POSTGRES_DB --default-artifact-root $MLFLOW_ARTIFACTS_PATH -h 0.0.0.0 -p 8002
+```
+Abrir browser en http://localhost:8002/
 
 # Airbyte
 ```bash
@@ -99,8 +109,65 @@ GRANT USAGE ON SCHEMA public TO airbyte;
 ALTER DATABASE mlops OWNER TO airbyte;
 ```
 
+# dbT
+### Crear entorno
+
+```bash
+conda create -n mlops-dbt python=3.9
+conda activate mlops-dbt
+pip install dbt-postgres
+
+dbt --version
+
+dbt init db_postgres
+```
+
+En el archivo de configuración `~/.dbt/profiles.yml` se debe configurar la base de datos
+```yaml
+dbt_elt:
+  outputs:
+    dev:
+      type: postgres
+      threads: 1
+      host: localhost
+      port: 5432
+      user: postgres
+      pass: mysecretpassword
+      dbname: machine_learning
+      schema: public
+```
+
+### Creacion de base de datos
+```bash
+psql -U postgres -h localhost -p 5432
+```
+
+```sql
+CREATE DATABASE machine_learning;
+```
+
+### Testear conexión
+```bash
+dbt debug
+
+dbt run
+
+psql -U postgres -h localhost -p 5432
+```
+
+```sql
+\connect mlops
+\d
+
+
+```
+
 # Mongo
 
+### Desde cloud gratis
+https://cloud.mongodb.com/v2/653ac4dcf923b06a3d61bfcc#/overview
+
+### Desde docker
 ```bash
 docker pull mongo
 
@@ -113,7 +180,7 @@ docker run \
 docker exec -it mlops-mongo /bin/bash
 ```
 
-```
+```bash
 mongo
 test> show dbs
 test> use mlops
