@@ -137,28 +137,14 @@ dbt_elt:
       schema: public
 ```
 
-### Creacion de base de datos
-```bash
-psql -U postgres -h localhost -p 5432
-```
-
-```sql
-CREATE DATABASE machine_learning;
-```
-
 ### Testear conexión
 ```bash
 dbt debug
 
 dbt run
 
-psql -U postgres -h localhost -p 5432
-```
 
-```sql
-\connect mlops
-\d
-```
+
 
 # Mongo
 
