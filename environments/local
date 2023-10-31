@@ -1,0 +1,7 @@
+postgres_data_folder=/Users/julian/Documents/mlops-itba/mlops-ecosystem/dbs/data/postgres
+mongo_data_folder=/Users/julian/Documents/mlops-itba/mlops-ecosystem/dbs/data/mongo
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=mysecretpassword
+POSTGRES_HOST=localhost:5432
+MLFLOW_POSTGRES_DB=mlflow_db
+MLFLOW_ARTIFACTS_PATH=/Users/julian/Documents/mlops-itba/mlops-ecosystem/mlflow_data

@@ -1,18 +1,21 @@
-# PSQL DB
+# Definición de variables de entorno
+
 ```bash
-export postgres_data_folder=/Users/julian/Documents/mlops-itba/mlops-ecosystem/dbs/data/postgres
-export mongo_data_folder=/Users/julian/Documents/mlops-itba/mlops-ecosystem/dbs/data/mongo
-export POSTGRES_USER=postgres
-export POSTGRES_PASSWORD=mysecretpassword
-export POSTGRES_HOST=localhost:5432
-export MLFLOW_POSTGRES_DB=mlflow_db
-export MLFLOW_ARTIFACTS_PATH=/Users/julian/Documents/mlops-itba/mlops-ecosystem/mlflow_data
+# Seteo de variables
+set -o allexport && source environments/local && set +o allexport
+
+# Verificarlo
+echo $postgres_data_folder
 ```
 
+# PSQL DB
+
+### Bajar imagen
 ```bash
 docker pull postgres
 ```
 
+### Correr imagen
 ```bash
 docker run -d \
     --name mlops-postgres \
@@ -21,7 +24,10 @@ docker run -d \
     -v $postgres_data_folder:/var/lib/postgresql/data \
     -p 5432:5432 \
     postgres
+```
 
+### Verificar funcionamiento, y manejo del contenedor
+```bash
 docker ps
 
 docker ps -a
@@ -41,7 +47,7 @@ postgres=# exit
 psql -U postgres -h localhost -p 5432
 ```
 
-# Create MLFLOW DB
+### Create MLFLOW DB
 
 ```sql
 CREATE DATABASE mlflow_db;
