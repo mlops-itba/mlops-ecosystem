@@ -2,7 +2,7 @@
 
 ```bash
 # Seteo de variables
-set -o allexport && source environments/local && set +o allexport
+set -o allexport && source .env && set +o allexport
 
 # Verificarlo
 echo $postgres_data_folder
@@ -68,7 +68,9 @@ pip install -r requirements.txt
 
 ```bash
 # desde la carpeta del proyecto
+
 set -o allexport && source environments/local && set +o allexport
+
 mlflow server --backend-store-uri postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOST/$MLFLOW_POSTGRES_DB --default-artifact-root $MLFLOW_ARTIFACTS_PATH -h 0.0.0.0 -p 8002
 ```
 Abrir browser en http://localhost:8002/
@@ -133,8 +135,8 @@ dbt_elt:
       port: 5432
       user: postgres
       pass: mysecretpassword
-      dbname: machine_learning
-      schema: public
+      dbname: mlops
+      schema: target
 ```
 
 ### Testear conexión
