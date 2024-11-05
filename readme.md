@@ -1,7 +1,18 @@
+# Instalación de env conda
+```bash
+conda create -n mlops-env python=3.12
+conda activate mlops-env
+pip install mlflow
+conda install -c conda-forge psycopg2
+```
+
+
 # Definición de variables de entorno
+Desde carpeta del repo
 
 ```bash
 # Seteo de variables
+export REPO_FOLDER=${PWD}
 set -o allexport && source .env && set +o allexport
 
 # Verificarlo
@@ -34,16 +45,20 @@ docker ps -a
 
 docker exec -it mlops-postgres /bin/bash
 
-root@08487b094f8a:/#  psql -U postgres
+root@08487b094f8a$  psql -U postgres
 
-root@08487b094f8a:/#  exit
+postgres   exit
+
+root@08487b094f8a$  exit
 
 docker kill mlops-postgres
 
 docker container rm mlops-postgres
+```
 
-postgres=# exit
-
+Si tiene instalado psql:
+```bash
+export PGPASSWORD=$POSTGRES_PASSWORD 
 psql -U postgres -h localhost -p 5432
 ```
 
@@ -58,24 +73,20 @@ GRANT ALL PRIVILEGES ON DATABASE mlflow_db TO mlflow_user;
 
 # Mlflow server
 
-### Creación de entorno e instalación de MLFLOW
-```bash
-conda create -n mlflow-server python=3.9
-conda activate mlflow-server
-
-pip install -r requirements.txt
-```
 
 ```bash
 # desde la carpeta del proyecto
-
-set -o allexport && source environments/local && set +o allexport
 
 mlflow server --backend-store-uri postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOST/$MLFLOW_POSTGRES_DB --default-artifact-root $MLFLOW_ARTIFACTS_PATH -h 0.0.0.0 -p 8002
 ```
 Abrir browser en http://localhost:8002/
 
 # Airbyte
+
+### Tutorial
+https://docs.airbyte.com/using-airbyte/getting-started/oss-quickstart
+
+### Esto quedo obsoleto?
 ```bash
 # clone Airbyte from GitHub
 git clone --depth=1 https://github.com/airbytehq/airbyte.git
@@ -93,10 +104,14 @@ password: `password`
 
 ## Creación de source (csvs)
 https://raw.githubusercontent.com/mlops-itba/Datos-RS/main/data/peliculas_0.csv
+
 https://raw.githubusercontent.com/mlops-itba/Datos-RS/main/data/usuarios_0.csv
+
 https://raw.githubusercontent.com/mlops-itba/Datos-RS/main/data/scores_0.csv
 
 ## Creación de destination (psql)
+IP localhost no funciona, usar ip local (192.x.x.x)
+
 
 ```bash
 psql -U postgres -h localhost -p 5432
@@ -111,6 +126,17 @@ GRANT USAGE ON SCHEMA public TO airbyte;
 ALTER DATABASE mlops OWNER TO airbyte;
 ```
 
+```sql
+CREATE DATABASE mlops;
+CREATE USER "jganzaba@itba.edu.ar" WITH ENCRYPTED PASSWORD 'airbyte';
+GRANT ALL PRIVILEGES ON DATABASE mlops TO "jganzaba@itba.edu.ar";
+GRANT ALL ON SCHEMA public TO "jganzaba@itba.edu.ar";
+GRANT USAGE ON SCHEMA public TO "jganzaba@itba.edu.ar";
+ALTER DATABASE mlops OWNER TO "jganzaba@itba.edu.ar";
+
+\du 
+```
+
 # dbT
 ### Crear entorno
 
@@ -120,7 +146,10 @@ conda activate mlops-dbt
 pip install dbt-postgres
 
 dbt --version
+```
 
+Con el siguiente comando se configura la db
+```bash
 dbt init db_postgres
 ```
 
