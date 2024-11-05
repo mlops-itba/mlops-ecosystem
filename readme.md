@@ -187,6 +187,7 @@ https://cloud.mongodb.com/v2/653ac4dcf923b06a3d61bfcc#/overview
 
 ### Desde docker
 ```bash
+
 docker pull mongo
 
 docker run \
@@ -196,7 +197,12 @@ docker run \
     mongo
 
 docker exec -it mlops-mongo /bin/bash
+
+pip install pymongo
+
 ```
+
+Se puede testear desde `source/test_mongo.py`
 
 ```bash
 mongo

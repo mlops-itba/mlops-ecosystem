@@ -2,7 +2,9 @@
 import pymongo
 # %%
 myclient = pymongo.MongoClient(
-    "mongodb+srv://itba:itba_pass@cluster0.6mytljp.mongodb.net/"
+    'localhost'
+    # "mongodb+srv://itba:itba_pass@cluster0.6mytljp.mongodb.net/"
+
 )
 # %%
 myclient.list_database_names()
