@@ -148,12 +148,15 @@ pip install dbt-postgres
 dbt --version
 ```
 
-Con el siguiente comando se configura la db
+Con el siguiente comando se crea el repo y se configura la db
 ```bash
 dbt init db_postgres
+cd db_postgres
 ```
 
-En el archivo de configuración `~/.dbt/profiles.yml` se debe configurar la base de datos
+Verificar archivo de configuración `~/.dbt/profiles.yml` 
+
+
 ```yaml
 dbt_elt:
   outputs:
@@ -168,16 +171,16 @@ dbt_elt:
       schema: target
 ```
 
-### Testear conexión
+### Testear conexión y correr
 ```bash
 dbt debug
 
 dbt run
+```
 
 
 
-
-# Mongo
+# Mongo (Opcional)
 
 ### Desde cloud gratis
 https://cloud.mongodb.com/v2/653ac4dcf923b06a3d61bfcc#/overview
