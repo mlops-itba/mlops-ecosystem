@@ -50,10 +50,6 @@ root@08487b094f8a$  psql -U postgres
 postgres   exit
 
 root@08487b094f8a$  exit
-
-docker kill mlops-postgres
-
-docker container rm mlops-postgres
 ```
 
 Si tiene instalado psql:
